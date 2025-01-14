@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Balloon Flights</title>
+   <style>
+
+       
+body {
+     font-family: Arial, sans-serif;
+     margin: 0;
+     padding: 0;
+     background-color: #f9f9f9;
+     color: #333;
+     font-family: "poppins";
+   }
+
+.travel-boxes { 
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+           gap: 20px;
+           padding: 20px 0;
+       }
+       
+       .travel-box {
+           background: #fff;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           overflow: hidden;
+           text-align: left;
+           transition: transform 0.3s ease, box-shadow 0.3s ease;
+       }
+       
+       .travel-box:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+       }
+       
+       .travel-box img {
+           width: 100%;
+           height: 300px;
+           object-fit: cover;
+       }
+       
+       .travel-box h3 {
+           font-size: 22px;
+           color: #007bff;
+           margin: 15px 0 10px;
+           margin-left: 10px;
+           font-family: "Nunito", sans-serif;
+       }
+       
+       .travel-box p {
+           font-size: 14px;
+           padding: 0 10px;
+           margin-bottom: 15px;
+           color: #555;
+       }
+       
+       .buttons {
+           display: flex;
+           justify-content: space-around;
+           padding: 10px 15px 15px;
+       }
+       
+       .buttons button {
+           padding: 8px 12px;
+           border: none;
+           border-radius: 5px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: background-color 0.3s;
+       }
+       
+       .buttons .explore {
+           background-color: #007bff;
+           color: #fff;
+       }
+       
+       .buttons .explore:hover {
+           background-color: #0056b3;
+       }
+       
+       .buttons .plan {
+           background-color: white;
+           color: #007bff;
+           border: 3px solid #007bff;
+       }
+       
+       .buttons .plan:hover {
+           background-color: #ffffff;
+           border: 3px solid #0056b3;
+       }
+
+       .message {
+           margin-top: 20px;
+           padding: 15px;
+           background-color: #f8d7da;
+           color: #721c24;
+           border: 1px solid #f5c6cb;
+           border-radius: 5px;
+           display: none;
+       }
+
+       .popup {
+           position: fixed;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           background-color: #fff;
+           border: 1px solid #ccc;
+           border-radius: 10px;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+           padding: 20px;
+           text-align: center;
+           display: none;
+           z-index: 1000;
+       }
+
+       .popup p {
+           margin: 0;
+           font-size: 16px;
+           color: #333;
+       }
+
+       .popup .close-btn {
+           margin-top: 15px;
+           padding: 8px 15px;
+           background-color: #dd2424;
+           color: #fff;
+           border: none;
+           border-radius: 5px;
+           font-size: 14px;
+           cursor: pointer;
+       }
+
+       .popup .close-btn:hover {
+           background-color: #c52020;
+       }
+
+       .container {
+           display: flex;
+           flex-wrap: wrap;
+           align-items: center;
+           justify-content: center;
+           padding: 20px;
+           background-color: whitesmoke;
+           margin-top: 40px;
+       }
+       .text-section {
+           flex: 1;
+           min-width: 300px;
+           padding: 20px;
+       }
+       .text-section h1 {
+           font-size: 2em;
+           margin-bottom: 10px;
+       }
+       .text-section h2 {
+           font-size: 1.2em;
+           color: gray;
+           margin-bottom: 20px;
+       }
+       .text-section p {
+           font-size: 1em;
+           line-height: 1.6;
+           color: #333;
+           margin-bottom: 20px;
+       }
+       .text-section a {
+           text-decoration: none;
+           color: #007bff;
+           font-weight: bold;
+       }
+       .image-section {
+           flex: 1;
+           min-width: 300px;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           padding: 20px;
+       }
+       .image-section img {
+           max-width: 100%;
+           border-radius: 10px;
+           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+       }
+       @media (max-width: 768px) {
+           .container {
+               flex-direction: column-reverse;
+               text-align: center;
+               margin-top: 30px;
+               background-color: whitesmoke;
+           }
+           .text-section, .image-section {
+               padding: 10px;
+           }
+           header {
+               height: 300px;
+           }
+           header h1 {
+               font-size: 1.8rem;
+               margin: 10px;
+           }
+           .navbar {
+               padding: 15px 20px;
+           }
+           
+           .tours, .services .features, .travel-boxes {
+               flex-direction: column;
+               align-items: center;
+           }
+           .features div, .tour, .travel-box {
+               max-width: 90%;
+           }
+
+           .container {
+               text-align: left;
+           }
+
+           .travel-boxes{
+               align-items: center;
+               margin-left: 30px;
+           }
+           
+       }
+
+
+
+
+   .header-image {
+ position: relative;
+ width: 100%;
+ height: 300px; /* Adjust height as needed */
+ color: white; /* Ensures the text is visible */
+ display: flex; /* Centers text */
+ justify-content: center;
+ align-items: center;
+ text-align: center; /* Optional for multi-line text */
+}
+
+.header-image::before {
+ content: "";
+ position: absolute;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: url('mountain.jpg') no-repeat center/cover;
+ filter: brightness(0.5); /* Darkens the background image */
+ z-index: -1; /* Ensures the overlay is below the text */
+}
+
+
+   
+
+
+
+
+   .header-image div  {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+   }
+
+   .header-image div h1{
+       font-size: 6rem;
+       color: #fff;
+       text-shadow:0 4px 8px rgba(0, 0, 0, 0.1); 
+       
+
+   }
+
+
+
+   .navbar {
+     display: flex;
+     justify-content: flex-start; /* Aligns items to the left */
+     align-items: center;
+     padding-right:20px;
+     background-color: #1b2b3a;
+   }
+
+   .navbar ul {
+     list-style: none;
+     display: flex;
+     gap: 20px;
+   }
+
+   .navbar ul li {
+     position: relative;
+   }
+
+   .navbar ul li a {
+     text-decoration: none;
+     color: white;
+     padding: 5px 10px;
+     display: inline-block;
+     transition: background-color 0.3s;
+   }
+
+   .navbar ul li:hover a {
+     background-color: rgba(255, 255, 255, 0.1);
+   }
+
+   .navbar ul li a::after {
+     content: "";
+     position: absolute;
+     left: 0;
+     bottom: 0;
+     width: 0%;
+     height: 3px;
+     background-color: #00ffcc;
+     transition: width 0.3s;
+   }
+
+   .navbar ul li:hover a::after {
+     width: 100%;
+   }
+
+   /* Social icons */
+   .social-icons {
+     display: flex;
+     gap: 15px;
+     margin-left: auto; /* Aligns social icons to the right */
+   }
+
+   .social-icons a {
+     color: white;
+     font-size: 18px;
+     transition: color 0.3s;
+   }
+
+   .social-icons a:hover {
+     color: #00ffcc;
+   }
+
+   /* Responsive navbar */
+   @media (max-width: 768px) {
+     .navbar ul {
+       flex-direction: column;
+       display: none;
+       background-color: #1b2b3a;
+       width: 100%;
+     }
+
+     .navbar ul.active {
+       display: flex;
+     }
+
+     .menu-toggle {
+       cursor: pointer;
+       font-size: 20px;
+       color: white;
+     }
+     .header-image div h1{
+       font-size: 4.5rem;
+       color: #fff;
+       text-shadow:0 4px 8px rgba(0, 0, 0, 0.1); 
+       
+
+   }
+   }
+
+   </style>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playwrite+AU+QLD+Guides&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+   <nav class="navbar">
+       <div class="menu-toggle">☰</div>
+       <ul>
+         <li><a href="index.html">Home</a></li>
+         <li><a href="about.html">About</a></li>
+         <li><a href="contact-us.html">Contact Us</a></li>
+       </ul>
+       <div class="social-icons">
+         <a href="#">&#xf09a;</a> <!-- Facebook -->
+         <a href="#">&#xf099;</a> <!-- Twitter -->
+         <a href="#">&#xf0d5;</a> <!-- Google+ -->
+         <a href="#">&#xf16d;</a> <!-- Instagram -->
+       </div>
+     </nav>
+   
+     <script>
+       const toggle = document.querySelector('.menu-toggle');
+       const menu = document.querySelector('.navbar ul');
+   
+       toggle.addEventListener('click', () => {
+         menu.classList.toggle('active');
+       });
+     </script>
+           
+   <div class="header-image">
+       <div>
+       <h1>Mountain</h1>
+     </div>
+     </div>
+   
+
+<!-- Travel Boxes -->
+<div class="travel-boxes" id="travel-boxes" >
+   <div class="travel-box" data-aos="fade-up">
+       <img src="mountain (1).jpg" alt="Lakshadweep">
+       <h3>Switzerland</h3>
+       <p>Settled off the Kerala coast on Laccadive sea, Lakshadweep translates to ‘a hundred thousand islands’. A club of 36 atolls and coral reefs, the nature tourism destination is known for preserved ecology and water sports.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="100">
+       <img src="mountain (2).jpg" alt="Bali">
+       <h3>Japan</h3>
+       <p>An exotic tropical destination that flaunts scenic beaches and mountains, Bali is deep-rooted in culture and tradition, which adds to the charm of this scenic island.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="200">
+       <img src="mountain (3).jpg" alt="Istanbul">
+       <h3>Peru</h3>
+       <p>With History dating back to Ancient Greeks and varied landscape, Istanbul is home to delightful cuisine, a rich culture, and sights that will take your breath away.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="300">
+       <img src="mountain (4).jpg" alt="Manali">
+       <h3>France</h3>
+       <p>Nestled on the banks of River Beas, Manali will take your breath away with its snow-kissed peaks, lush valleys and heart-pumping adventure experiences in the heart of Himalayas.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="400">
+       <img src="mountain (5).jpg" alt="Goa">
+       <h3>Italy</h3>
+       <p>Popularly known as India’s party capital, Goa seduces travellers from all around the globe with its boho beaches, ancient churches, majestic forts and unbeatable nightlife!</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="500">
+       <img src="mountain (6).jpg" alt="Mykonos">
+       <h3>Nepal</h3>
+       <p>An intrinsic part of the Cyclades Islands in the Aegean Sea, the Greek Island of Mykonos is all about age-old churches with stony white-washed façades.</p>
+       <div class="buttons">
+           <a href="beaches-9 (1).jpg"><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="600">
+       <img src="mountain (8).jpg" alt="Varkala">
+       <h3>Tanzina</h3>
+       <p>Flaunting one of the best cliff beaches in Kerala, Varkala is a lesser known yet absolutely paradisiacal destination that houses forts, pilgrimage sites, springs, natural fisheries and more.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+   <div class="travel-box" data-aos="fade-up" data-aos-delay="700">
+       <img src="mountains-hoilidays.webp" alt="Alleppey">
+       <h3>Austria</h3>
+       <p>Also known as Alappuzha, Aleppey will take your breath away with its emerald green backwaters, palm-fringed lakes and beautiful stretches of lush paddy fields in the heart of Kerala.</p>
+       <div class="buttons">
+           <a href=""><button class="explore">Explore</button></a>
+           <button class="plan" onclick="showPopup()">Plan Trip</button>
+       </div>
+   </div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+   <p>This plan is not available now</p>
+   <button class="close-btn" onclick="closePopup()">Close</button>
+</div>
+
+<script>
+   function showPopup() {
+       const popup = document.getElementById('popup');
+       popup.style.display = 'block';
+   }
+
+   function closePopup() {
+       const popup = document.getElementById('popup');
+       popup.style.display = 'none';
+   }
+</script>
